@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis/redis-stack:latest # For development: come with RedisInsight to visualize your data.
+    # image: redis/redis-stack-server:latest # For production: provides Redis Stack server only.
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379' # server.
+      - '8001:8001' # RedisInsight: like pgadmin.
+    volumes: 
+      - redis-data:/data
+      - ./config/local-redis-stack.conf:/redis-stack.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+
+volumes:
+  redis-data:
+    driver: local  # Use the local volume driver
+    driver_opts:
+      type: none
+      o: bind
+      device: ./redis-data  # Specify the local directory to mount to

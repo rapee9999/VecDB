@@ -1,0 +1,5 @@
+data/*
+config/*
+!config/test
+lfw-people
+lfw-funneled
